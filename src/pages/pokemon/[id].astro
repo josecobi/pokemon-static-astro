@@ -1,9 +1,17 @@
 ---
-import MainLayout from "../../layout/MainLayout.astro";
+import MainLayout from "@layout/MainLayout.astro";
 
 import type { GetStaticPaths } from "astro";
-import type { PokemonListResponse } from "../../interfaces/pokemon-list.response";
-import PokemonCard from "../../components/pokemon/PokemonCard.astro";
+import type { PokemonListResponse } from "@interfaces/pokemon-list.response";
+// PRelative Path
+// import PokemonCard from "../../components/pokemon/PokemonCard.astro";
+// Absolute Path
+// import PokemonCard from "src/components/pokemon/PokemonCard.astro";
+
+// TypeScriptAlias Path
+import PokemonCard from "@components/pokemon/PokemonCard.astro";
+
+
 
 export const getStaticPaths = (async () => {
     const resp = await fetch('https://pokeapi.co/api/v2/pokemon?limit=151');

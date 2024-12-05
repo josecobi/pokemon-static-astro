@@ -3,6 +3,8 @@ import type { GetStaticPaths } from "astro";
 import PokemonCard from "@components/pokemon/PokemonCard.astro";
 import MainLayout from "@layout/MainLayout.astro";
 import type { PokemonListResponse } from "@interfaces/pokemon-list.response";
+import Title from "@components/pokemon/shared/Title.astro";
+import { Icon } from 'astro-icon/components';
 
 export const getStaticPaths = (async () => {
     
@@ -26,15 +28,28 @@ const { url, nameProp } = Astro.props;
 
 const id = url.split('/').at(-2);
 const audioSrc = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/${id}.ogg`;
+const imgSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`
+
+
 ---
 
-<MainLayout title="A pokemon">
+<MainLayout 
+    title=`Pokemon - #${id} ${name}`
+    description={`About pokemon ${name}`}
+    image={imgSrc}
+>
     <section class="mt-10 mx-10 flex flex-col justify-center items-center">
-        <div>
-            <a href="/">Back</a>
-            <h1 class="text-5xl capitalize">{name}</h1>
-        </div>
+        <div class="flex flex-row">
+            <div>
+                <button onclick="history.back()" class="text-blue-500">Back</button>
+                <Title>{name}</Title>
+            </div>
 
+            <button id="btn-favorite" class="ml-4">
+                <Icon name="heart-empty" size={50}/>
+                <Icon class="hidden" name="heart-full" size={50}/>
+            </button>
+        </div>  
         <PokemonCard name={ name } url={url} isBig={true}/>
 
         <audio controls class="mt-5" >
@@ -49,5 +64,9 @@ const audioSrc = `https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pok
 <style>
     a {
         @apply hover:underline text-blue-500;
+    }
+
+    #btn-favorite {
+        @apply hover:animate-pulse;
     }
 </style>

@@ -5,7 +5,7 @@ import PokemonCard from '../../components/pokemon/PokemonCard.astro';
 import type { PokemonListResponse } from '../../interfaces/pokemon-list.response';
 
 import MainLayout from '../../layout/MainLayout.astro';
-import Title from "@components/pokemon/shared/Title.astro";
+import Title from "@components/shared/Title.astro";
 
 
 
@@ -26,7 +26,7 @@ const { page } = Astro.props
 <MainLayout	title={title}>
 
 	<Title>All Pokemons</Title>
-	<section aria-label="Pokemon List" class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-5 gap-4 mt-5">
+	<section aria-label="Pokemon List" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4 mt-5">
 	
 		{page.data.map(({name, url}) => (<PokemonCard url={url} name={name}/>))}
 

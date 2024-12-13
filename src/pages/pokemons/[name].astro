@@ -3,7 +3,7 @@ import type { GetStaticPaths } from "astro";
 import PokemonCard from "@components/pokemon/PokemonCard.astro";
 import MainLayout from "@layout/MainLayout.astro";
 import type { PokemonListResponse } from "@interfaces/pokemon-list.response";
-import Title from "@components/pokemon/shared/Title.astro";
+import Title from "@components/shared/Title.astro";
 import { Icon } from 'astro-icon/components';
 
 export const getStaticPaths = (async () => {
@@ -46,8 +46,8 @@ const imgSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites
             </div>
 
             <button id="btn-favorite" class="ml-4" data-name={name} data-id={id}>
-                <Icon name="heart-empty" size={50}/>
-                <Icon class="hidden" name="heart-full" size={50}/>
+                <Icon data-empty name="heart-empty" size={50}/>
+                <Icon data-full class="hidden" name="heart-full" size={50}/>
             </button>
         </div>  
         <PokemonCard name={ name } url={url} isBig={true}/>
@@ -67,40 +67,81 @@ const imgSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites
         id: number;
     }
 
-    document.addEventListener('astro:before-preparation', () => {
-        console.log('astro:before-preparation');
-    })
+    // document.addEventListener('astro:before-preparation', () => {
+    //     console.log('astro:before-preparation');
+    // })
 
-    document.addEventListener('astro:after-preparation', () => {
-        console.log('astro:after-preparation');
-    })
+    // document.addEventListener('astro:after-preparation', () => {
+    //     console.log('astro:after-preparation');
+    // })
 
 
-    document.addEventListener('astro:before-swap', () => {
-        console.log('astro:before-swap');
-    })
+    // document.addEventListener('astro:before-swap', () => {
+    //     console.log('astro:before-swap');
+    // })
 
-    document.addEventListener('astro:after-swap', () => {
-        console.log('astro:after-swap');
-    })
-
-    document.addEventListener('astro:page-load', () => {
-        console.log('hola');
-    });
+    // document.addEventListener('astro:after-swap', () => {
+    //     console.log('astro:after-swap');
+    // })
 
     // document.addEventListener('astro:page-load', () => {
-    
-    // const btnFavorite = document.querySelector('#btn-favorite') as HTMLButtonElement;
-    
-    // if (!btnFavorite) return;
-    // const name = btnFavorite.dataset.name;
-    // const id = btnFavorite.dataset.id;
+    //     console.log('hola');
+    // });
 
-    // btnFavorite.addEventListener('click', () =>{
-    // console.log(`name: ${name}, id: ${id}`);
-    // })
+    const handlePageLoad = () => {
 
-    // })
+        let favoritePokemons: FavoritePokemon[] = JSON.parse(
+            localStorage.getItem('favorites') ?? '[]'
+        );
+    
+        const btnFavorite = document.querySelector('#btn-favorite') as HTMLButtonElement;
+        
+        if (!btnFavorite) return;
+        const name = btnFavorite.dataset.name ?? '';
+        const id = btnFavorite.dataset.id ?? '';
+
+        const heartEmpty = btnFavorite.querySelector('[data-empty') as HTMLElement;
+        const heartFull = btnFavorite.querySelector('[data-full') as HTMLElement;
+        const isFavorite = favoritePokemons.some(fav => fav.name === name);
+        //function to show either fullheart or emptyheart
+        const checkFav = () => {
+            
+            if(isFavorite){
+                heartEmpty.classList.add('hidden')
+                heartFull.classList.remove ('hidden');
+            } 
+        }
+        checkFav()
+        const toggleFavorite = () => {
+            const isFavorite = favoritePokemons.some(fav => fav.name === name);
+            
+            if(isFavorite){
+                //Remove
+                favoritePokemons = favoritePokemons.filter( (fav) => fav.name !== name);
+
+            } else {
+                //Add
+                favoritePokemons.push({
+                    id: +id,
+                    name: name,
+                })
+
+            }
+
+            localStorage.setItem('favorites', JSON.stringify(favoritePokemons));
+        }
+
+
+        btnFavorite.addEventListener('click', () => {
+            heartEmpty.classList.toggle('hidden');
+            heartFull.classList.toggle('hidden');
+
+            toggleFavorite();
+        });
+        checkFav();
+    };
+    
+    document.addEventListener('astro:page-load', handlePageLoad);
 
     
     

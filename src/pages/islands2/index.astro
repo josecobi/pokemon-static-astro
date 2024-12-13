@@ -1,0 +1,15 @@
+---
+import { Counter } from '@components/Counter';
+import Title from "@components/shared/Title.astro";
+import MainLayout from "@layout/MainLayout.astro";
+import type { onumber } from 'astro:schema';
+
+
+---
+<MainLayout title="Islands2">
+    <Title>Islands2</Title>
+    <Counter transition:persist-props transition:persist="counter" client:visible initValue={15}>
+        <Title>Counter Island</Title>
+    </Counter>
+
+</MainLayout>

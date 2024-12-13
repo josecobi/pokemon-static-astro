@@ -4,7 +4,7 @@ import PokemonCard from '@components/pokemon/PokemonCard.astro';
 import type { PokemonListResponse } from '@interfaces/pokemon-list.response';
 
 import MainLayout from '../layout/MainLayout.astro';
-import Title from '@components/pokemon/shared/Title.astro';
+import Title from '@components/shared/Title.astro';
 
 
 const resp = await fetch('https://pokeapi.co/api/v2/pokemon');
@@ -17,7 +17,7 @@ const title = 'Pokemon Static | Home';
 
 	<Title> Featured Pokemon</Title>
 	<hr />
-	<section aria-label="Pokemon List" class="grid grid-cols-1 sm:grid-cols-4 md:grid-cols-5 gap-4 mt-5">
+	<section aria-label="Pokemon List" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4 mt-5">
 	
 		{data.results.map(({name, url}) => (<PokemonCard url={url} name={name}/>))}
 

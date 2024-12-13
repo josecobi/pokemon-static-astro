@@ -62,10 +62,13 @@ const imgSrc = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites
 </MainLayout>
 
 <script>
-    interface FavoritePokemon {
-        name: string;
-        id: number;
-    }
+    import type { FavoritePokemon } from "@interfaces/favorite-pokemon";
+
+    // interface FavoritePokemon {
+    //     name: string;
+    //     id: number;
+    // }
+
 
     // document.addEventListener('astro:before-preparation', () => {
     //     console.log('astro:before-preparation');
